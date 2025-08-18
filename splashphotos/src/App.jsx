@@ -21,7 +21,7 @@ export default function App(){
     fetchPhotos();
   }, [query])
   return(
-    <div>
+    <div className="w-11/12">
       <Form query={query} setQuery={setQuery}/>
       <Photos photos={photos}/>
     </div>
@@ -49,7 +49,7 @@ function Form({query, setQuery}){
 
 function Photos({photos}){
 return(
-  <div className="bg-blue-300 h-[300px]">
+  <div className=" h-fit">
   {photos.map((photo)=>(
     <Photo key={photo.id} photo={photo}/>
   ))
@@ -59,9 +59,14 @@ return(
 )
 }
  function Photo({photo}){
+  const photoDescription = photo.alt_description
+    .replaceAll("-", " ")
+    .toUpperCase(0)
+  
 return(
-  <div className="w-[200px]">
-    <img src={photo.urls.thumb} />
+  <div className="w-[250px] flex gap-4 shadow-lg   ">
+    <img src={photo.urls.thumb} alt={photo.alt_description} className="w-[50px] border rounded-lg" />
+  <p><span className="font-bold">Photo description : </span><span className='text-sm'><em>{photoDescription}</em></span></p>
   </div>
 )
  }
