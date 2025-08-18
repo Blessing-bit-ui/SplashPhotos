@@ -12,22 +12,24 @@ export default function App(){
   useEffect(function(){
     async function fetchPhotos(){
       const res = await fetch(
-        `https://api.unsplash.com/photos?client_id=${AccessKey}&s=${query}`
+        `https://api.unsplash.com/search/photos?page=1&client_id=${AccessKey}&query=${query}`
       )
       const data= await res.json();
-      console.log(data)
+      console.log(data.results)
+      setPhotos(data.results)
     }
-  })
+    fetchPhotos();
+  }, [query])
   return(
     <div>
       <Form query={query} setQuery={setQuery}/>
+      <Photos photos={photos}/>
     </div>
   )
 }
 
 
 function Form({query, setQuery}){
-    const [photo, setPhoto] = useState("")
   return(
     <div className="bg-purple-700 p-3 mr-2 ml-2 border rounded-lg">
 <form className='flex gap-4 justify-center'>
@@ -43,3 +45,23 @@ function Form({query, setQuery}){
 </div>
   )
 }
+
+
+function Photos({photos}){
+return(
+  <div className="bg-blue-300 h-[300px]">
+  {photos.map((photo)=>(
+    <Photo key={photo.id} photo={photo}/>
+  ))
+
+  }
+  </div>
+)
+}
+ function Photo({photo}){
+return(
+  <div className="w-[200px]">
+    <img src={photo.urls.thumb} />
+  </div>
+)
+ }
