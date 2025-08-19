@@ -10,14 +10,17 @@ export default function App(){
   const [photos, setPhotos] = useState([])
   const [query, setQuery] = useState("")
   const [selected, setSelected] = useState(null)
+const  [loading, setLoading] = useState(false)
   useEffect(function(){
     async function fetchPhotos(){
+      setLoading(true)
       const res = await fetch(
         `https://api.unsplash.com/search/photos?page=1&client_id=${AccessKey}&query=${query}`
       )
       const data= await res.json();
       console.log(data.results)
       setPhotos(data.results)
+      setLoading(false)
     }
     fetchPhotos();
   }, [query])
@@ -34,6 +37,14 @@ export default function App(){
     </div>
   )
 }
+
+function IsLoading({loading}){
+  return(
+    <div>
+   <p>...Loading</p>
+    </div>
+  )
+} 
  
 function Form({query, setQuery}){
   return(
@@ -54,12 +65,10 @@ function Form({query, setQuery}){
 
 function Photos({photos, onPhoto}){
 return(
-  <div className=" h-fit">
-  {photos.map((photo)=>(
-    <Photo key={photo.id} photo={photo} onPhoto={onPhoto}/>
-  ))
-
-  }
+  <div className="h-fit">
+{photos.map((photo)=>(
+  <Photo key={photo.id} photo={photo} onPhoto={onPhoto}/>
+))}
   </div>
 )
 }
@@ -78,7 +87,8 @@ return(
 
 function PhotoDetails({selected}){
 const [photo, setPhoto] = useState({})
-useEffect(function() {
+
+/*useEffect(function() {
     async function fetchPhoto() {
       const res = await fetch(
         `https://api.unsplash.com/photos/${selected}?client_id=${AccessKey}`
@@ -88,10 +98,10 @@ useEffect(function() {
       setPhoto(data);
     }
     fetchPhoto();
-  }, [selected] )
+  }, [selected] )*/
 return(
   <div>
-    <p></p>
+    <p>hhhh</p>
   </div>
 )
 }
